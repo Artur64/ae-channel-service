@@ -25,7 +25,6 @@ defmodule ClientRunnerHelper do
     GenServer.cast(client_runner, {:end_pause})
   end
 
-
   # TODO time to move this module to ex unit
   def expected(response, {account1, value1}, {account2, value2}) do
     expect =
@@ -48,5 +47,4 @@ defmodule ClientRunnerHelper do
        expected(result, {account1, value1}, {account2, value2})
      end}
   end
-
 end

@@ -119,13 +119,13 @@ defmodule ClientRunner do
         case sign_info do
           {:default} ->
             signed = SessionHolder.sign_message(pid_session_holder, to_sign)
-            fun = &(SocketConnector.send_signed_message(&1, elem(message, 2), signed))
+            fun = &SocketConnector.send_signed_message(&1, elem(message, 2), signed)
             SessionHolder.run_action(pid_session_holder, fun)
 
           {:backchannel, pid_other_session_holder} ->
             signed = SessionHolder.sign_message(pid_session_holder, to_sign)
             signed2 = SessionHolder.sign_message(pid_other_session_holder, signed)
-            fun = &(SocketConnector.send_signed_message(&1, elem(message, 2), signed2))
+            fun = &SocketConnector.send_signed_message(&1, elem(message, 2), signed2)
             SessionHolder.run_action(pid_session_holder, fun)
 
           {:check_poi} ->
