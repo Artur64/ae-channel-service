@@ -7,6 +7,7 @@ jobs:
     working_directory: ~/app
     steps:
       - checkout
+      - run: sudo apt-get -qq -y update && sudo apt-get -qq -y install elixir
       - run: mix local.hex --force
       - run: mix local.rebar --force
       - restore_cache:
