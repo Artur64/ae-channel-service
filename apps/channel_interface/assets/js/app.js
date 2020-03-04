@@ -21,6 +21,7 @@ var channel = null;
 
 
 
+let connect_wallet_btn = document.getElementById('connect_wallet_btn');
 let reestablish_btn = document.getElementById('reestablish_btn');
 let leave_btn = document.getElementById('leave_btn');
 
@@ -139,7 +140,6 @@ connect_initiator_websocket_btn.addEventListener('click', function (event) {
     });
 });
 
-
 connect_responder_websocket_btn.addEventListener('click', function (event) {
 
     channel = socket.channel('socket_connector:lobby', { role: "responder", channel_id: channel_id.value}); // connect to chat "room"
@@ -167,3 +167,11 @@ connect_responder_websocket_btn.addEventListener('click', function (event) {
         connection_status.style.backgroundColor = 'red';
     });
 });
+
+connect_wallet_btn.addEventListener('click', function (event) {
+    Aepp
+        .request
+        .connect()
+        .then(result => console.log(result))
+});
+
