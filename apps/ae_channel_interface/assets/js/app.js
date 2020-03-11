@@ -24,7 +24,6 @@ let public_key = document.getElementById('public_key');
 let backend_params = document.getElementById('backend_params');
 let start_backend_btn = document.getElementById('start_backend_btn');
 
-let reestablish_btn = document.getElementById('reestablish_btn');
 let leave_btn = document.getElementById('leave_btn');
 
 
@@ -84,6 +83,11 @@ connect_port.addEventListener('input', function (updatevalue) {
 });
 
 channel_id.addEventListener('input', function (updatevalue) {
+    if (channel_id.value == "") {
+        connect_btn.textContent = "Connect"
+    } else {
+        connect_btn.textContent = "Reestablish"
+    }
     updateBackendParams(connect_port.value, channel_id.value, public_key.value)
 });
 
@@ -136,15 +140,11 @@ transfer_btn.addEventListener('click', function (event) {
 });
 
 connect_btn.addEventListener('click', function (event) {
-    channel.push('connect', { port: parseInt(connect_port.value), channel_id: channel_id.value});
+    channel.push('connect/reestablish', { port: parseInt(connect_port.value), channel_id: channel_id.value});
 });
 
 leave_btn.addEventListener('click', function (event) {
     channel.push('leave', {});
-});
-
-reestablish_btn.addEventListener('click', function (event) {
-    channel.push('connect', { port: parseInt(connect_port.value), channel_id: channel_id.value});
 });
 
 teardown_btn.addEventListener('click', function (event) {
@@ -156,6 +156,7 @@ connect_initiator_websocket_btn.addEventListener('click', function (event) {
     
     channel = socket.channel('socket_connector:lobby', {role: "initiator"}); // connect to chat "room"
     channel.join();
+    connect_btn.disabled = false
 
 
     channel.on('log_event', function (payload) { // listen to the 'log_event' event
@@ -185,6 +186,8 @@ connect_responder_websocket_btn.addEventListener('click', function (event) {
     channel = socket.channel('socket_connector:lobby', { role: "responder", channel_id: channel_id.value}); // connect to chat "room"
     channel.join();
 
+    connect_btn.disabled = false
+
 
     channel.on('log_event', function (payload) { // listen to the 'log_event' event
         console.log("some message");
@@ -209,3 +212,4 @@ connect_responder_websocket_btn.addEventListener('click', function (event) {
 });
 
 updateBackendParams(connect_port.value, channel_id.value, public_key.value)
+connect_btn.disabled = true
